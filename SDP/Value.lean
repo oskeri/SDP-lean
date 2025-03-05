@@ -14,17 +14,16 @@ class Value (V : Type) extends Add V, Zero V, Preorder V where
 
 namespace Value
 
-variable
-  (A V : Type)
-
 -- Lifting the addition to functions with values as codomain
 
-instance [Value V] : Add (A → V) where
+instance {A V : Type} [Value V] : Add (A → V) where
   add := fun f g a => f a + g a
 
 -- Lifting the preorder to functions with values as codomain
 
-instance [Value V] : Preorder (A → V) where
+instance {A V : Type} [Value V] : Preorder (A → V) where
   le := fun f g => ∀ a, f a ≤ g a
   le_refl := fun f a => le_refl _
   le_trans := fun f g h h1 h2 a => le_trans (h1 a) (h2 a)
+
+end Value
