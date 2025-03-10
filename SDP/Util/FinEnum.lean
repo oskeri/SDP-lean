@@ -2,20 +2,12 @@ import Mathlib.Data.FinEnum
 
 namespace FinEnum
 
--- This does not belong here but I refuse to believe that this is not proven elsewhere already
-
-lemma length_map_eq_length {l : List A} {f : A → B} : (List.map f l).length = l.length := by
-  induction l
-  · case nil =>
-    unfold List.map
-    rfl
-  · case cons h t IH =>
-    unfold List.map
-    unfold List.length
-    rw [IH]
+/-- The length of `FinEnum.toList A` is equal to `FinEnum.card`. -/
 
 theorem length_toList_eq_card [FinEnum A] : List.length (toList A) = card A := by
-  rw [FinEnum.toList.eq_1, length_map_eq_length, List.length_finRange]
+  simp [FinEnum.toList.eq_1, List.length_finRange]
+
+/-- `FinEnum.toList A` is not equal to `[]`. -/
 
 theorem toList_neq_nil [FinEnum A] [Nonempty A] : toList A ≠ [] := by
   intro h

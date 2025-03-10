@@ -5,11 +5,17 @@ import Mathlib.Order.Defs.PartialOrder
 import SDP.Util.FinEnum
 import SDP.Util.Order
 
+/-- `Argmax A B` for a preorder B denotes that one can always find `a : A`
+such that `f a` is an upper bound of values in the image of any `f : A → B`
+-/
+
 class Argmax (A B : Type) extends Preorder B where
   argmax : (A → B) → A
   le_argmax (f : A → B) (a : A) : f a ≤ f (argmax f)
 
 namespace Argmax
+
+/-- A function used to define an `Argmax` instance. -/
 
 def argmax' [FinEnum A] [Nonempty A] [Preorder B] [@DecidableRel B B (· < ·)] (f : A → B) : A :=
   match h : List.argmax f (FinEnum.toList A) with
@@ -30,6 +36,9 @@ lemma argmax'_mem_argmax [FinEnum A] [Nonempty A] [Preorder B] [@DecidableRel B 
   --   simp [h]
 
   -- | none => sorry
+
+/-- An instance of `Argmax A B` for non-empty, finite enumerable type `A` and totally
+preordered type `B`. -/
 
 instance argmax_of_finEnum [FinEnum A] [Nonempty A] [TotalPreorder B] : Argmax A B where
   argmax := argmax'
