@@ -51,10 +51,15 @@ instance : Preorder (PolicySeq t n) where
 at least as large as any other (w.r.t its preorder).
 -/
 
-def OptimalPolicySeq (ps : PolicySeq t n) : Prop :=
+def IsOptimalPolicySeq (ps : PolicySeq t n) : Prop :=
   ∀ (ps' : PolicySeq t n), ps' ≤ ps
 
-def OptimalPolicyExtension (ps : PolicySeq (t + 1) n) (p : Policy t) : Prop :=
+/-- Optimal extensions of policy sequences. A policy is an optimal
+extension if the extended sequence is at least as large as any
+other extended sequence (w.r.t its preorder).
+-/
+
+def IsOptimalPolicyExtension (ps : PolicySeq (t + 1) n) (p : Policy t) : Prop :=
   ∀ (p' : Policy t), cons p' ps ≤ cons p ps
 
 /-- Bellman's optimality principle. An optimal extension of an optimal sequence
@@ -63,9 +68,9 @@ is an optimal sequence.
 
 theorem opt_ext_of_opt_policy_seq_is_opt_policy_seq
   {p : Policy t} {ps : PolicySeq (t + 1) n} :
-  OptimalPolicyExtension ps p →
-  OptimalPolicySeq ps →
-  OptimalPolicySeq (cons p ps)
+  IsOptimalPolicyExtension ps p →
+  IsOptimalPolicySeq ps →
+  IsOptimalPolicySeq (cons p ps)
   | opt, opt', cons p' ps', s => calc (cons p' ps').val s
     _ = measure ((reward s (p' s) + val ps') <$> next s (p' s)) := by rw [val]
     _ ≤ measure ((reward s (p' s) + val ps) <$> next s (p' s))  := by
@@ -76,5 +81,7 @@ theorem opt_ext_of_opt_policy_seq_is_opt_policy_seq
           · apply opt'
     _ = (cons p' ps).val s                                      := by rw [val]
     _ ≤ (cons p ps).val s                                       := opt _ _
+
+
 
 end PolicySeq
