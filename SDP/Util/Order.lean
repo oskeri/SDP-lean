@@ -1,7 +1,13 @@
 import Mathlib.Order.Defs.PartialOrder
 import Mathlib.Order.Defs.Unbundled
 
+
+
+
 class TotalPreorder (A : Type) extends Preorder A, IsTrichotomous A (· < ·)
+
+namespace TotalPreorder
+
 
 instance [self : TotalPreorder A] : @DecidableRel A A (· < ·) :=
   fun a b => by
@@ -12,3 +18,5 @@ instance [self : TotalPreorder A] : @DecidableRel A A (· < ·) :=
 --       sorry
 --       -- exact isTrue h
 --     | inr h => sorry
+
+-- #check TotalPreorder

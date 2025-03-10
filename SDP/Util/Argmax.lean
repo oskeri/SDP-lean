@@ -3,7 +3,7 @@ import Mathlib.Data.FinEnum
 import Mathlib.Data.List.MinMax
 import Mathlib.Order.Defs.PartialOrder
 import SDP.Util.FinEnum
-import SDP.Util.TotalPreorder
+import SDP.Util.Order
 
 class Argmax (A B : Type) extends Preorder B where
   argmax : (A → B) → A

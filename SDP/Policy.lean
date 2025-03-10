@@ -55,7 +55,7 @@ theorem opt_ext_of_opt_policy_seq_is_opt_policy_seq
     _ ≤ measure ((reward s (p' s) + val ps) <$> next s (p' s))  := by
           apply measure_comp_map_le_measure_comp_map
           intro
-          apply add_le_add
+          apply Value.add_le_add
           · rfl
           · apply opt'
     _ = (cons p' ps).val s                                      := by rw [val]
