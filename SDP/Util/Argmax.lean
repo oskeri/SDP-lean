@@ -45,3 +45,5 @@ instance argmax_of_finEnum [FinEnum A] [Nonempty A] [TotalPreorder B] : Argmax A
         · exact FinEnum.toList A
         · apply FinEnum.mem_toList
         · apply argmax'_mem_argmax
+
+end Argmax
