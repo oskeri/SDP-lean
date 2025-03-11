@@ -30,7 +30,8 @@ def argmax_nonempty [Preorder B] [@DecidableRel B B (· < ·)]
 /-- `argmax_nonempty` gives the argument that maximizes `f` of all
 elements in the list. -/
 
-theorem le_argmax_nonempty [TotalPreorder B] (f : A → B) (l : List A) (nonempty : l ≠ []) :
+theorem le_argmax_nonempty [TotalDecPreorder B]
+  (f : A → B) (l : List A) (nonempty : l ≠ []) :
   a ∈ l → f a ≤ f (argmax_nonempty f l nonempty) := by
   intro mem
   match @trichotomous B (· < ·) _ (f a) (f (argmax_nonempty f l nonempty)) with
@@ -62,7 +63,7 @@ namespace FinEnum
 /-- An instance of `Argmax A B` for non-empty, finite enumerable type `A` and totally
 preordered type `B`. -/
 
-instance [FinEnum A] [Nonempty A] [TotalPreorder B] : Argmax A B where
+instance [FinEnum A] [Nonempty A] [TotalDecPreorder B] : Argmax A B where
   argmax f :=
     List.argmax_nonempty f (FinEnum.toList A) FinEnum.toList_neq_nil
   le_argmax f a :=

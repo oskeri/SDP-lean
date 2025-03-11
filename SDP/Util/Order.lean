@@ -1,23 +1,12 @@
 import Mathlib.Order.Defs.PartialOrder
 import Mathlib.Order.Defs.Unbundled
 
+/-- Total and decidable preorders. -/
 
-/-- Total preorders. -/
+class TotalDecPreorder (A : Type) extends Preorder A, IsTrichotomous A (· < ·) where
+  dec : @DecidableRel A A (· < ·)
 
-class TotalPreorder (A : Type) extends Preorder A, IsTrichotomous A (· < ·)
+/-- Instance declaration for decidability. -/
 
-namespace TotalPreorder
-
-/-- The order of total preorders is decidable. -/
-
-instance [self : TotalPreorder A] : @DecidableRel A A (· < ·) :=
-  fun a b => by
-    simp
-    admit
---     cases @trichotomous A (· < ·) _ a b with
---     | inl h =>
---       sorry
---       -- exact isTrue h
---     | inr h => sorry
-
--- #check TotalPreorder
+instance [TotalDecPreorder A] : @DecidableRel A A (· < ·) :=
+  TotalDecPreorder.dec
