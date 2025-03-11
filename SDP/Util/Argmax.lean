@@ -9,7 +9,7 @@ import SDP.Util.Order
 such that `f a` is an upper bound of values in the image of any `f : A → B`
 -/
 
-class Argmax (A B : Type) extends Preorder B where
+class Argmax (A B : Type) [Preorder B] where
   argmax : (A → B) → A
   le_argmax (f : A → B) (a : A) : f a ≤ f (argmax f)
 
@@ -63,7 +63,7 @@ namespace FinEnum
 /-- An instance of `Argmax A B` for non-empty, finite enumerable type `A` and totally
 preordered type `B`. -/
 
-instance [FinEnum A] [Nonempty A] [TotalDecPreorder B] : Argmax A B where
+instance argmax [FinEnum A] [Nonempty A] [TotalDecPreorder B] : Argmax A B where
   argmax f :=
     List.argmax_nonempty f (FinEnum.toList A) FinEnum.toList_neq_nil
   le_argmax f a :=

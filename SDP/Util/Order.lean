@@ -10,3 +10,5 @@ class TotalDecPreorder (A : Type) extends Preorder A, IsTrichotomous A (· < ·)
 
 instance [TotalDecPreorder A] : @DecidableRel A A (· < ·) :=
   TotalDecPreorder.dec
+
+instance [TotalDecPreorder V] : Preorder V := inferInstance
