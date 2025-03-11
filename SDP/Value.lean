@@ -10,7 +10,7 @@ Addition is monotone. Note that the zero element is not assumed
 to be the unit of addition.-/
 
 class Value (V : Type) extends Add V, Zero V, TotalDecPreorder V where
-  add_le_add : ∀ a b c d : V, a ≤ b → c ≤ d → a + c ≤ b + d
+  add_le_add : {a b c d : V} → a ≤ b → c ≤ d → a + c ≤ b + d
 
 namespace Value
 
