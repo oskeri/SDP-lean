@@ -31,6 +31,10 @@ lemma eq_cons {ps : PolicySeq t (n + 1)} : ∃ q qs, ps = cons q qs := match ps 
   | .cons q qs => by
     repeat (first | constructor | assumption | rfl)
 
+/-- The type of functions that compute policy sequence extensions -/
+
+def ExtFun := {t n : Nat} → PolicySeq (t + 1) n → Policy t
+
 
 end PolicySeq
 
@@ -107,18 +111,15 @@ theorem opt_ext_of_opt_policy_seq_is_opt_policy_seq
     _ = (cons p' ps).val s                                      := by rw [val]
     _ ≤ (cons p ps).val s                                       := opt _ _
 
-/-- The type of functions that compute policy sequence extensions -/
-
-def ExtFun := {t n : Nat} → PolicySeq (t + 1) n → Policy t
 
 /-- ExtFun:s that compute optimal policy sequence extensions. -/
 
-def IsOptExtFun (f : ExtFun (sdp := sdp)) :=
+def IsOptExtFun (f : ExtFun) :=
   ∀ {t n : Nat} (ps : PolicySeq (t + 1) n), IsOptimalExtension ps (f ps)
 
 /-- Compute a policy sequence given an extension function using backwards induction. -/
 
-def policySeq_from_ExtFun (ext : ExtFun (sdp := sdp)) (t n : Nat) : PolicySeq t n :=
+def policySeq_from_ExtFun (ext : ExtFun) (t n : Nat) : PolicySeq t n :=
   match n with
   | 0     => nil
   | n + 1 =>
@@ -130,7 +131,7 @@ sequence if applied to an optimal extension function. -/
 
 theorem OptPolicySeq_from_OptExtFun
   (ext : ExtFun) (isOpt : IsOptExtFun ext) {t n : Nat} :
-  IsOptimalPolicySeq (policySeq_from_ExtFun (sdp := sdp) ext t n) := by
+  IsOptimalPolicySeq (policySeq_from_ExtFun ext t n) := by
   intro ps s
   induction n generalizing t
   case zero =>
