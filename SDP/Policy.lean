@@ -50,6 +50,7 @@ variable {m : Type → Type}
 variable [Monad m]
 variable [sdp : SDP V m]
 
+
 /-- The value of a policy sequence `ps` at a given state `s`. That is, the total
 `reward` recieved from applying the policies of `ps`, starting at `s`. -/
 
@@ -59,6 +60,12 @@ def val : PolicySeq t n → State t → V
     have c := p s
     measure ((reward s c + val ps) <$> next s c)
 
+/-- Compute the value of a policy sequence `ps` given a starting state `s` and a
+control `c`. -/
+
+def val' (ps : PolicySeq (t + 1) n) (s : State t) (c : Ctrl s) : V :=
+  measure ((reward s c + val ps) <$> next s c)
+
 /-- The value of an empty policy sequence. -/
 
 @[simp] lemma val_nil : val nil s = Zero.zero := by rfl
@@ -67,6 +74,11 @@ def val : PolicySeq t n → State t → V
 
 @[simp] lemma val_cons :
   val (cons p ps) s = measure ((reward s (p s) + val ps) <$> next s (p s)) := by rfl
+
+/-- Relating the functions `val` and `val'` -/
+
+lemma val_eq_val' : val (cons p ps) s = val' ps s (p s) := by
+  rw [val, val']
 
 /-- A preorder instance for policy sequences. The order is given by the value
 of the sequence as given by `val` using the preorder for `Value`. -/
