@@ -20,8 +20,12 @@ inductive PolicySeq : Nat → Nat → Type
 
 namespace PolicySeq
 
+/-- Empty policy sequences are equal to `nil`. -/
+
 @[simp] lemma eq_nil {ps : PolicySeq t 0} : ps = .nil := match ps with
   | .nil => rfl
+
+/-- Non-empty policy sequences are equal to `cons q qs` for some `q` and `qs`. -/
 
 lemma eq_cons {ps : PolicySeq t (n + 1)} : ∃ q qs, ps = cons q qs := match ps with
   | .cons q qs => by
@@ -51,7 +55,11 @@ def val : PolicySeq t n → State t → V
     have c := p s
     measure ((reward s c + val ps) <$> next s c)
 
+/-- The value of an empty policy sequence. -/
+
 @[simp] lemma val_nil : val nil s = Zero.zero := by rfl
+
+/-- The value of a non-empty policy sequence. -/
 
 @[simp] lemma val_cons :
   val (cons p ps) s = measure ((reward s (p s) + val ps) <$> next s (p s)) := by rfl
@@ -90,7 +98,7 @@ theorem opt_ext_of_opt_policy_seq_is_opt_policy_seq
   IsOptimalPolicySeq (cons p ps)
   | opt, opt', cons p' ps', s => calc (cons p' ps').val s
     _ = measure ((reward s (p' s) + val ps') <$> next s (p' s)) := by rw [val]
-    _ ≤ measure ((reward s (p' s) + val ps) <$> next s (p' s))  := by
+    _ ≤ measure ((reward s (p' s) + val ps)  <$> next s (p' s)) := by
           apply measure_comp_map_le_measure_comp_map
           intro
           apply Value.add_le_add
@@ -108,6 +116,8 @@ def ExtFun := {t n : Nat} → PolicySeq (t + 1) n → Policy t
 def IsOptExtFun (f : ExtFun (sdp := sdp)) :=
   ∀ {t n : Nat} (ps : PolicySeq (t + 1) n), IsOptimalExtension ps (f ps)
 
+/-- Compute a policy sequence given an extension function using backwards induction. -/
+
 def policySeq_from_ExtFun (ext : ExtFun (sdp := sdp)) (t n : Nat) : PolicySeq t n :=
   match n with
   | 0     => nil
@@ -115,25 +125,19 @@ def policySeq_from_ExtFun (ext : ExtFun (sdp := sdp)) (t n : Nat) : PolicySeq t 
     have ps := policySeq_from_ExtFun ext (t + 1) n
     cons (ext ps) ps
 
+/-- The policy sequence given by `policySeq_from_ExtFun` is an optimal policy
+sequence if applied to an optimal extension function. -/
+
 theorem OptPolicySeq_from_OptExtFun
-  (ext : ExtFun) (isOpt : IsOptExtFun ext) {t n : Nat} : IsOptimalPolicySeq (policySeq_from_ExtFun (sdp := sdp) ext t n) := by
+  (ext : ExtFun) (isOpt : IsOptExtFun ext) {t n : Nat} :
+  IsOptimalPolicySeq (policySeq_from_ExtFun (sdp := sdp) ext t n) := by
   intro ps s
-  induction n generalizing t s
+  induction n generalizing t
   case zero =>
     simp
   case succ n IH =>
-    have ⟨q , ⟨qs , h⟩⟩ := eq_cons (ps := ps)
-    let qs' := policySeq_from_ExtFun ext (t + 1) n
-    calc val ps s
-    _ = SDP.measure ((reward s (q s) + val qs) <$> next s (q s))  := by simp [h]
-    _ ≤ SDP.measure ((reward s (q s) + val qs') <$> next s (q s)) := by
-                                                                      apply measure_comp_map_le_measure_comp_map
-                                                                      intro s
-                                                                      apply Value.add_le_add
-                                                                      · trivial
-                                                                      · apply IH
-    _ = val (cons q qs') s                                        := by simp
-    _ ≤ val (cons (ext qs') qs') s                                := isOpt _ _ _
-    _ = val (policySeq_from_ExtFun ext t (n + 1)) s               := by rw [policySeq_from_ExtFun]
+    apply opt_ext_of_opt_policy_seq_is_opt_policy_seq
+    · apply isOpt
+    · apply IH
 
 end PolicySeq
