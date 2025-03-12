@@ -2,6 +2,7 @@
 -- Import modules here that should be built as part of the library.
 import SDP.Policy
 import SDP.Policy.Argmax
+import SDP.Policy.FinEnum
 import SDP.SDP
 import SDP.Trajectory
 import SDP.Value

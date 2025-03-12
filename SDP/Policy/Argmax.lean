@@ -1,5 +1,4 @@
 
-import SDP.Value
 import SDP.SDP
 import SDP.Policy
 import SDP.Util.Argmax

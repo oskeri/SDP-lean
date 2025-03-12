@@ -2,6 +2,7 @@
 
 import SDP.Util.Order
 import SDP.Util.Argmax
+import SDP.Util.FinEnum
 
 -- A Value type has addition,
 
