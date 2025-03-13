@@ -34,12 +34,12 @@ end StateCtrl
 namespace Trj
 
 open SDP
-open Value
+open Measure
 
 variable {V : Type}
-variable [Value V]
 variable {m : Type → Type}
 variable [Monad m]
+variable [Measure V m]
 variable [SDP V m]
 
 /-- Compute the trajctories of a policy sequence starting at a state. -/

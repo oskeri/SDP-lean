@@ -42,12 +42,12 @@ end StateCtrl
 
 namespace PolicySeq
 open SDP
-open Value
+open Measure
 
 variable {V : Type}
-variable [Value V]
 variable {m : Type → Type}
 variable [Monad m]
+variable [Measure V m]
 variable [sdp : SDP V m]
 
 

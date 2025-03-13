@@ -10,12 +10,8 @@ class StateCtrl where
 
 /-- Sequential decision problems given a value type V and Monad m. -/
 
-class SDP (V : Type) (m : Type → Type) [Value V] [Monad m] extends StateCtrl where
+class SDP (V : Type) (m : Type → Type) [Monad m] [Measure V m] extends StateCtrl where
   -- The next state(s) given the current state and action.
   next  : (s : State t) → Ctrl s → m (State (t + 1))
   -- The reward from taking an action that leads to a given state.
   reward : (s : State t) → Ctrl s → State (t + 1) → V
-  -- A monotone aggregation function for values in the monad.
-  measure : m V → V
-  measure_comp_map_le_measure_comp_map :
-    f ≤ g → measure ∘ (Functor.map f) ≤ measure ∘ (Functor.map g)

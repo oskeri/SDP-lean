@@ -9,9 +9,9 @@ open StateCtrl
 open PolicySeq
 
 variable {V : Type}
-variable [Value V]
 variable {m : Type → Type}
 variable [Monad m]
+variable [Measure V m]
 variable [sdp : SDP V m]
 
 variable (argmax : {t : Nat} → (s : State t) → Argmax (Ctrl s) V)

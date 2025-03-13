@@ -10,9 +10,9 @@ open StateCtrl
 open PolicySeq
 
 variable {V : Type}
-variable [Value V]
 variable {m : Type → Type}
 variable [Monad m]
+variable [Measure V m]
 variable [sdp : SDP V m]
 
 variable (finEnum : {t : Nat} → (s : State t) → FinEnum (Ctrl s))
