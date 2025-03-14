@@ -148,7 +148,7 @@ def next (t : Nat) (s : State) (ctrl : Control s) : SP State :=
     have (pS, pD) := pTransition tr ctrl
     have (pH, pL) := pWealth tr w ctrl
     have (pC, pU) := pCommittment t tr c ctrl
-    SP.mkSP (
+    SP.dropImpossible (SP.mkSP (
     (pS * pH * pC, (.S, .H, .C)) ::
     (pS * pH * pU, (.S, .H, .U)) ::
     (pS * pL * pC, (.S, .L, .C)) ::
@@ -157,7 +157,7 @@ def next (t : Nat) (s : State) (ctrl : Control s) : SP State :=
     (pD * pH * pU, (.D, .H, .U)) ::
     (pD * pL * pC, (.D, .L, .C)) ::
     (pD * pL * pU, (.D, .L, .U)) ::
-    [])
+    []))
 
 /-- The reward function. States where the world is committed or have low
 wealth are bad. Other states are good. -/
@@ -201,11 +201,11 @@ def best (t n : Nat) (s : State) : Nat × Control s × Rat :=
 -- def GHG_trj_String (t n : Nat) (s : State) : String :=
 --   @toString _  (GHG_trj t n s)
 
-#eval GHG_trj 0 3 (.D,.H,.U)
+#eval GHG_trj 0 1 (.D,.H,.U)
 #eval GHG_val 0 1 (.D,.H,.U)
 #eval best 0 0 (.D,.H,.U)
 #eval best 0 1 (.D,.H,.U)
 #eval best 0 2 (.D,.H,.U)
 #eval best 0 3 (.D,.H,.U)
--- #eval best 0 4 (.D,.H,.U)
--- #eval best 0 5 (.D,.H,.U)
+#eval best 0 4 (.D,.H,.U)
+#eval best 0 5 (.D,.H,.U)

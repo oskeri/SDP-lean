@@ -62,13 +62,10 @@ def scaleWeights (w : Nat) : SP A → SP A
   scaleWeights w (cons x sp) = cons (w * x.1, x.2) (scaleWeights w sp) := by
   simp [scaleWeights]
 
--- @[simp] theorem scaleWeights_one (sp : SP A) : scaleWeights 1 sp = sp := by
---   match sp with
---   | mkSP l =>
---   induction l
---   · rw [scaleWeights, nil]
---   · case cons h t IH =>
---     simp [scaleWeights,IH]
+/-- Remove impossible entries -/
+
+def dropImpossible : SP A → SP A
+  | mkSP l => mkSP (List.filter (fun (w,_) => w ≠ 0) l)
 
 instance : Append (SP A) where
   append xs ys := mkSP (xs.toList ++ ys.toList)
