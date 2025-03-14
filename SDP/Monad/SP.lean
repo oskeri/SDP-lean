@@ -120,9 +120,14 @@ theorem map_eq_ap_map {f : A → B} {l : SP A} :
     have (_,_) := h
     simp [IH]
 
+/-- `toString` instance for `SP`. -/
 
-
--- @[simp] theorem map_totalWeight' {f : A → B} {l : SP A} :
---   totalWeight (f <$> l) = totalWeight l := by
---   simp [Functor.map]
---   admit
+instance instToStringSP [ToString α] : ToString (SP α) where
+  toString
+    | mkSP l =>
+      String.intercalate "\n"
+        (List.map (go (totalWeight (mkSP l))) l)
+  where
+  go (wTot : Nat) : Nat × α → String
+    | (w , a) =>
+      toString a ++ " (" ++ toString w ++ "/" ++ toString wTot ++ ")"

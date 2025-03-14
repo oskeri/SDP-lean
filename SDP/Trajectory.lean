@@ -2,6 +2,7 @@ import SDP.SDP
 import SDP.Policy
 
 open StateCtrl
+open ToStringStateCtrl
 
 section StateCtrl
 
@@ -12,7 +13,6 @@ variable [sc : StateCtrl]
 inductive Trj : Nat → Nat → Type
   | sg : State t → Trj t 1
   | cons : (s : State t) → Ctrl s → Trj (t + 1) (n + 1) → Trj t (n + 2)
-
 namespace Trj
 
 /-- The first state of a trajectory. -/
@@ -27,6 +27,15 @@ instance instIsEmpty : IsEmpty (Trj t 0) := by
   constructor
   intro tr
   nomatch tr
+
+
+instance instToString [ToStringStateCtrl sc] : ToString (Trj t n) where
+  toString := toString'
+  where
+  toString' {t n : Nat} : Trj t n → String
+    | sg s => toStringState s
+    | cons s c tr =>
+      toStringState s ++ " →⟨ " ++ toStringCtrl c ++ " ⟩ " ++ toString' tr
 
 end Trj
 end StateCtrl

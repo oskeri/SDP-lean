@@ -8,6 +8,16 @@ class StateCtrl where
   State : Nat → Type
   Ctrl  : State t → Type
 
+namespace StateCtrl
+
+/-- States and Controls which can be printed. -/
+
+class ToStringStateCtrl (sc : StateCtrl) where
+  toStringState : State t → String
+  toStringCtrl {s : State t} : Ctrl s → String
+
+end StateCtrl
+
 /-- Sequential decision problems given a value type V and Monad m. -/
 
 class SDP (V : Type) (m : Type → Type) [Monad m] [Measure V m] extends StateCtrl where
