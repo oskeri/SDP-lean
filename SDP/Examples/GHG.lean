@@ -203,9 +203,4 @@ def best (t n : Nat) (s : State) : Nat × Control s × Rat :=
 
 #eval GHG_trj 0 1 (.D,.H,.U)
 #eval GHG_val 0 1 (.D,.H,.U)
-#eval best 0 0 (.D,.H,.U)
-#eval best 0 1 (.D,.H,.U)
-#eval best 0 2 (.D,.H,.U)
-#eval best 0 3 (.D,.H,.U)
-#eval best 0 4 (.D,.H,.U)
-#eval best 0 5 (.D,.H,.U)
+-- #eval best 0 0 (.D,.H,.U)

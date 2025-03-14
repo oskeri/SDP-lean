@@ -123,7 +123,8 @@ instance instToStringSP [ToString α] : ToString (SP α) where
   toString
     | mkSP l =>
       String.intercalate "\n"
-        (List.map (go (totalWeight (mkSP l))) l)
+        (List.map (go (totalWeight (mkSP l)))
+          (List.mergeSort l (fun (w,_) (w',_) => w' ≤ w)))
   where
   go (wTot : Nat) : Nat × α → String
     | (w , a) =>
