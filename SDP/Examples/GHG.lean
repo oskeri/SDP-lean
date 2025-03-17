@@ -110,9 +110,7 @@ instance Nonempty_Control (s : State) : Nonempty (Control s) :=
 
 instance instToStringControl (s : State) : ToString (Control s) :=
   match s with
-  | (.S, _) => {
-    toString _ := "     "
-  }
+  | (.S, _) => { toString _ := "     " }
   | (.D, _) => instToStringStartDelay
 
 def pTransition (tr : Transition) (c : Control' tr) : Nat × Nat :=
@@ -163,8 +161,8 @@ def next (t : Nat) (s : State) (ctrl : Control s) : SP State :=
 wealth are bad. Other states are good. -/
 
 def reward : State → Rat
-  | (_ , .L, _) => 0
   | (_ , _, .C) => 0
+  | (_ , .L, _) => 0
   | (_ , .H, .U) => 1
 
 /-- The Greenhouse gas emissions SDP -/
@@ -179,28 +177,26 @@ instance GHG_SDP : SDP Rat SP where
 /-- `ToStringStateCtrl` instance for the SDP -/
 
 instance instToStringStateCtrl : ToStringStateCtrl GHG_SDP.toStateCtrl where
-  toStringState s := toString (self := instToStringState) s
-  toStringCtrl c := toString (self := instToStringControl _) c
+  toStringState := toString (self := instToStringState)
+  toStringCtrl := toString (self := instToStringControl _)
 
 /-- The optimal policy sequence for the SDP -/
 
 def GHG_policySeq (t n : Nat) : PolicySeq t n :=
   FinEnum.bestPolicySeq FinEnum_Control Nonempty_Control t n
 
+/-- The trajectory of the optimal sequence. -/
+
 def GHG_trj (t n : Nat) (s : State) : SP (Trj t (n + 1)) :=
   Trj.trj (GHG_policySeq t n) s
+
+/-- The value of the optimal sequence. -/
 
 def GHG_val (t n : Nat) (s : State) : Rat :=
   PolicySeq.val (GHG_policySeq t n) s
 
-def best (t n : Nat) (s : State) : Nat × Control s × Rat :=
-  match GHG_policySeq t (n + 1) with
-  | .cons p ps =>
-    (n + 1 , p s , PolicySeq.val (.cons p ps) s)
-
--- def GHG_trj_String (t n : Nat) (s : State) : String :=
---   @toString _  (GHG_trj t n s)
-
+-- Display the optimal trajectory
 #eval GHG_trj 0 1 (.D,.H,.U)
+
+-- Display the optimal value
 #eval GHG_val 0 1 (.D,.H,.U)
--- #eval best 0 0 (.D,.H,.U)
