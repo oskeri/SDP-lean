@@ -24,6 +24,8 @@ likely an error in the transition function `next`.
 
 open StateCtrl
 
+namespace GHG
+
 /-- Has the green transition started? -/
 
 inductive Transition : Type where
