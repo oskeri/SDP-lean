@@ -8,7 +8,8 @@ This file defines SDP:s
 
 ## References
 
-- Nocola Botta et al., "Responsibility Under Uncertainty: Which Climate Decisions Matter Most?", Environmental Modeling & Assesment (2023), doi: 10.1007/s10666-022-09867-w
+- Nocola Botta et al., "Responsibility Under Uncertainty: Which Climate Decisions Matter Most?",
+  Environmental Modeling & Assesment (2023), doi: 10.1007/s10666-022-09867-w
 -/
 
 /-- States and Controls. States are a representation of the system at

@@ -4,6 +4,24 @@ import SDP.Monad.SP
 import SDP.Policy.FinEnum
 import SDP.Trajectory
 
+/-!
+# Greenhouse gas emissions
+
+This example is taken from the paper "Responsibility Under Uncertainty:
+Which Climate Decisions Matter Most?" by Botta et al.
+
+It is a simple model of
+the problem of when to start a green energy transition. The world is modelled
+as a 3-tuple of whether green transition has started, the economic wealth and
+whether the world is committed to severe climate change impacts. The only decision
+is to either start the green transition or not (once started there is no more
+decision to take).
+
+Note that the results do not quite match the ones presented in the paper. There is
+likely an error in the transition function `next`.
+
+-/
+
 open StateCtrl
 
 /-- Has the green transition started? -/
@@ -106,18 +124,24 @@ instance Nonempty_Control (s : State) : Nonempty (Control s) :=
   | (.S, _) => .intro ()
   | (.D, _) => .intro .Start
 
-/-- -/
+/-- `ToString` instance for `Control`. -/
 
 instance instToStringControl (s : State) : ToString (Control s) :=
   match s with
   | (.S, _) => { toString _ := "     " }
   | (.D, _) => instToStringStartDelay
 
+/-- The probabilities of transitioning to `S` or `D` states from a given
+`Control'`. -/
+
 def pTransition (tr : Transition) (c : Control' tr) : Nat × Nat :=
   match tr, c with
   | .S, _ => (1,0)
   | .D, .Start => (9,1)
   | .D, .Delay => (1,9)
+
+/-- The probabilities of transitioning to `H` or `L` states from a given
+`Control'`. -/
 
 def pWealth (tr : Transition) (w : Wealth) (c : Control' tr) : Nat × Nat :=
   match tr, w, c with
@@ -128,11 +152,14 @@ def pWealth (tr : Transition) (w : Wealth) (c : Control' tr) : Nat × Nat :=
   | .S, .H, _      => (7,3)
   | .S, .L, _      => (3,7)
 
+/-- The probabilities of transitioning to `C` or `U` states from a given
+`Control'`. -/
+
 def pCommittment (t : Nat) (tr : Transition) (c : Committment) (ctrl : Control' tr) : Nat × Nat :=
   match t, tr, c, ctrl with
   | _ , _ , .C , _ => (1,0)
   | .zero, .D, .U, .Start => (1,9)
-  | .zero, .D, .U, .Delay => (3,7) --!
+  | .zero, .D, .U, .Delay => (3,7)
   | .zero, .S, .U, _ => (1,9)
   | .succ _, .D, .U, .Start => (1,9)
   | .succ _, .D, .U, .Delay => (7,3)

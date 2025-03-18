@@ -2,6 +2,14 @@ import SDP.Value
 import SDP.Monad.SP
 import Mathlib.Tactic
 
+/-!
+# Rational number values
+
+This file defines a `Value` instance for `Rat` as well as a `Measure`
+instance using the `SP` monad with the exectation value as `measure`.
+
+-/
+
 namespace Rat
 
 /-- `Value` instance for `Rat`. -/
