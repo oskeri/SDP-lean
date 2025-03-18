@@ -4,6 +4,14 @@ import SDP.Policy
 import SDP.Policy.Argmax
 import SDP.Util.FinEnum
 
+/-!
+# Policy.FinEnum
+
+This file finds optimal policy sequences for SDP:s with finitly enumerable
+and nonempty controls.
+-/
+
+
 namespace FinEnum
 
 open StateCtrl

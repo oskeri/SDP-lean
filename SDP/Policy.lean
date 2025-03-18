@@ -1,6 +1,14 @@
 import SDP.SDP
 import SDP.Value
 
+/-!
+# Policies and Policy Sequences
+
+This file defines policies and policy sequences as well as optimality
+conditions for them and constructs, given some assumptions, optimal
+policy sequences using backward induction.
+-/
+
 open StateCtrl
 
 section StateCtrl
@@ -21,7 +29,6 @@ inductive PolicySeq : Nat → Nat → Type
 namespace PolicySeq
 
 /-- Empty policy sequences are equal to `nil`. -/
-
 @[simp] lemma eq_nil {ps : PolicySeq t 0} : ps = .nil := match ps with
   | .nil => rfl
 
@@ -35,9 +42,7 @@ lemma eq_cons {ps : PolicySeq t (n + 1)} : ∃ q qs, ps = cons q qs := match ps 
 
 def ExtFun := {t n : Nat} → PolicySeq (t + 1) n → Policy t
 
-
 end PolicySeq
-
 end StateCtrl
 
 namespace PolicySeq
@@ -49,7 +54,6 @@ variable {m : Type → Type}
 variable [Monad m]
 variable [Measure V m]
 variable [sdp : SDP V m]
-
 
 /-- The value of a policy sequence `ps` at a given state `s`. That is, the total
 `reward` recieved from applying the policies of `ps`, starting at `s`. -/
@@ -89,8 +93,7 @@ instance : Preorder (PolicySeq t n) where
   le_trans := fun _ _ _ h1 h2 s => le_trans (h1 s) (h2 s)
 
 /-- Optimal policy sequences. A policy sequence is optimal if it is
-at least as large as any other (w.r.t its preorder).
--/
+at least as large as any other (w.r.t its preorder). -/
 
 def IsOptimalPolicySeq (ps : PolicySeq t n) : Prop :=
   ∀ (ps' : PolicySeq t n), ps' ≤ ps
@@ -103,9 +106,8 @@ other extended sequence (w.r.t its preorder).
 def IsOptimalExtension (ps : PolicySeq (t + 1) n) (p : Policy t) : Prop :=
   ∀ (p' : Policy t), cons p' ps ≤ cons p ps
 
-/-- Bellman's optimality principle. An optimal extension of an optimal sequence
-is an optimal sequence.
--/
+/-- Bellman's optimality principle. An optimal extension
+of an optimal sequence is an optimal sequence. -/
 
 theorem opt_ext_of_opt_policy_seq_is_opt_policy_seq
   {p : Policy t} {ps : PolicySeq (t + 1) n} :

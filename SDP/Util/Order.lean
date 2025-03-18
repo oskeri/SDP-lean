@@ -1,6 +1,15 @@
 import Mathlib.Order.Defs.PartialOrder
 import Mathlib.Order.Defs.Unbundled
 
+/-!
+# Order
+
+This file defines order relations.
+
+Currently, only total and decidable preorders are defined here.
+
+-/
+
 /-- Total and decidable preorders. -/
 
 class TotalDecPreorder (A : Type) extends Preorder A, IsTrichotomous A (· < ·) where

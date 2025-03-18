@@ -1,6 +1,13 @@
 import SDP.SDP
 import SDP.Policy
 
+/-!
+# Trajectories
+
+This file defines trajectories representing the transition of states.
+The primary purposes of trajectories is to visualize the solution of an SDP.
+-/
+
 open StateCtrl
 open ToStringStateCtrl
 
@@ -28,6 +35,7 @@ instance instIsEmpty : IsEmpty (Trj t 0) := by
   intro tr
   nomatch tr
 
+/-- A `ToString` instance for `Trj`. -/
 
 instance instToString [ToStringStateCtrl sc] : ToString (Trj t n) where
   toString := toString'

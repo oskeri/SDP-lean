@@ -1,10 +1,13 @@
--- Values for SDP:s
-
 import SDP.Util.Order
 import SDP.Util.Argmax
 import SDP.Util.FinEnum
 
--- A Value type has addition,
+/-!
+# Value types
+
+This file defines values and measurable values.
+
+-/
 
 /-- A value type has a "zero" element and a preorder.
 Addition is monotone. Note that the zero element is not assumed
@@ -16,7 +19,7 @@ class Value (V : Type) extends Add V, Zero V, TotalDecPreorder V where
 /-- Values with a `measure` function. -/
 
 class Measure (V : Type) (m : Type → Type) [Monad m] extends Value V where
-    -- A monotone aggregation function for values in the monad.
+  /-- A monotone aggregation function for values in the monad. -/
   measure : m V → V
   measure_comp_map_le_measure_comp_map :
     f ≤ g → measure ∘ (Functor.map f) ≤ measure ∘ (Functor.map g)
@@ -38,7 +41,5 @@ instance {A V : Type} [Value V] : Preorder (A → V) where
 /-- Functions into values support an argmax function for certain domains. -/
 
 instance argmax [FinEnum A] [Nonempty A] [Value V] : Argmax A V := FinEnum.argmax
-
-
 
 end Value

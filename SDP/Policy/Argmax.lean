@@ -3,6 +3,14 @@ import SDP.SDP
 import SDP.Policy
 import SDP.Util.Argmax
 
+/-!
+# Policy.Argmax
+
+This file finds optimal policy sequences for SDP:s with an `Argmax` instance
+for controls and values.
+
+-/
+
 namespace Argmax
 
 open StateCtrl

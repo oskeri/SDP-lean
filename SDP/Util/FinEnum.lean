@@ -2,6 +2,14 @@ import Mathlib.Data.FinEnum
 import SDP.Util.Argmax
 import SDP.Util.Order
 
+/-!
+# FinEnum
+
+This file provides an `Argmax` instance for Finitly enumerable, nonempty types given
+a total and decidable preorder.
+
+-/
+
 namespace FinEnum
 
 /-- The length of `FinEnum.toList A` is equal to `FinEnum.card`. -/

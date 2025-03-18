@@ -1,8 +1,15 @@
-
 import Mathlib.Data.FinEnum
 import Mathlib.Data.List.MinMax
 import Mathlib.Order.Defs.PartialOrder
 import SDP.Util.Order
+
+/-!
+# Argmax
+
+This file defines the class `Argmax` for types which support an `argmax` function.
+It also defines a variant of `List.argmax` for non-empty lists.
+-/
+
 
 /-- `Argmax A B` for a preorder B denotes that one can always find `a : A`
 such that `f a` is an upper bound of values in the image of any `f : A → B`
